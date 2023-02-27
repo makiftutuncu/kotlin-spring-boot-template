@@ -1,7 +1,9 @@
 package dev.akif.cats
 
+import dev.akif.crud.CRUDRepository
 import dev.akif.crud.common.InstantProvider
 import dev.akif.crud.simpler.*
+import io.swagger.v3.oas.annotations.tags.Tag
 import jakarta.persistence.Id
 import org.springframework.stereotype.Component
 import org.springframework.stereotype.Repository
@@ -10,25 +12,34 @@ import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
 import jakarta.persistence.Entity as JakartaEntity
 import java.time.Instant
-import kotlin.math.absoluteValue
-import kotlin.random.Random
+import java.util.*
 
 @RestController
 @RequestMapping("/simpler-cats")
-class SimplerCatController(service: SimplerCatService, mapper: SimplerCatMapper): SimplerController<Long, SimplerCatEntity, SimplerCat, SimplerCatMapper, SimplerCatService>("SimplerCat", service, mapper)
+@Tag(name = "Simpler Cats", description = "CRUD operations for simpler cat entities")
+class SimplerCatController(service: SimplerCatService, mapper: SimplerCatMapper): SimplerController<UUID, SimplerCatEntity, SimplerCat, SimplerCatMapper, SimplerCatRepository, SimplerCatService>(
+    typeName = "SimplerCat",
+    service = service,
+    mapper = mapper
+)
 
 @Service
 class SimplerCatService(
     instantProvider: InstantProvider,
-    repository: SimplerRepository<Long, SimplerCatEntity>,
+    crudRepository: CRUDRepository<UUID, SimplerCatEntity>,
     mapper: SimplerCatMapper
-): SimplerService<Long, SimplerCatEntity, SimplerCat, SimplerCatMapper>("SimplerCat", instantProvider, repository, mapper)
+): SimplerService<UUID, SimplerCatEntity, SimplerCat, SimplerCatRepository, SimplerCatMapper>(
+    typeName = "SimplerCat",
+    instantProvider = instantProvider,
+    crudRepository = crudRepository,
+    mapper = mapper
+)
 
 @Component
-class SimplerCatMapper: SimplerMapper<Long, SimplerCatEntity, SimplerCat> {
+class SimplerCatMapper: SimplerMapper<UUID, SimplerCatEntity, SimplerCat> {
     override fun entityToBeCreatedFrom(createModel: SimplerCat, now: Instant): SimplerCatEntity =
         SimplerCatEntity(
-            id = Random.nextInt().absoluteValue.toLong(),
+            id = UUID.randomUUID(),
             name = createModel.name,
             breed = createModel.breed,
             age = createModel.age,
@@ -57,72 +68,25 @@ class SimplerCatMapper: SimplerMapper<Long, SimplerCatEntity, SimplerCat> {
             age = updateModel.age
         }
     }
-
-    override fun createDTOToCreateModel(createDTO: SimplerCat): SimplerCat =
-        SimplerCat(
-            id = createDTO.id,
-            name = createDTO.name,
-            breed = createDTO.breed,
-            age = createDTO.age,
-            version = 0,
-            createdAt = createDTO.createdAt,
-            updatedAt = createDTO.updatedAt,
-            deletedAt = createDTO.deletedAt
-        )
-
-    override fun modelToDTO(model: SimplerCat): SimplerCat =
-        SimplerCat(
-            id = model.id,
-            name = model.name,
-            breed = model.breed,
-            age = model.age,
-            version = model.version,
-            createdAt = model.createdAt,
-            updatedAt = model.updatedAt,
-            deletedAt = model.deletedAt
-        )
-
-    override fun updateDTOToUpdateModel(updateDTO: SimplerCat): SimplerCat =
-        SimplerCat(
-            id = updateDTO.id,
-            name = updateDTO.name,
-            breed = updateDTO.breed,
-            age = updateDTO.age,
-            version = updateDTO.version,
-            createdAt = updateDTO.createdAt,
-            updatedAt = updateDTO.updatedAt,
-            deletedAt = updateDTO.deletedAt
-        )
 }
 
 @Repository
-interface SimplerCatRepository: SimplerRepository<Long, SimplerCatEntity>
+interface SimplerCatRepository: SimplerRepository<UUID, SimplerCatEntity>
 
 @JakartaEntity
 class SimplerCatEntity(
-    @Id override var id: Long?,
-    var name: String?,
-    var breed: String?,
-    var age: Int?,
-    override var version: Int?,
-    override var createdAt: Instant?,
-    override var updatedAt: Instant?,
-    override var deletedAt: Instant?
-): SimplerEntity<Long, SimplerCatEntity>(id, version, createdAt, updatedAt, deletedAt) {
-    constructor() : this(
-        id = null,
-        name = null,
-        breed = null,
-        age = null,
-        version = null,
-        createdAt = null,
-        updatedAt = null,
-        deletedAt = null
-    )
-}
+    @Id override var id: UUID? = null,
+    var name: String? = null,
+    var breed: String? = null,
+    var age: Int? = null,
+    override var version: Int? = null,
+    override var createdAt: Instant? = null,
+    override var updatedAt: Instant? = null,
+    override var deletedAt: Instant? = null
+): SimplerEntity<UUID>(id, version, createdAt, updatedAt, deletedAt)
 
 data class SimplerCat(
-    val id: Long,
+    val id: UUID,
     val name: String,
     val breed: String,
     val age: Int,
@@ -130,8 +94,8 @@ data class SimplerCat(
     val createdAt: Instant,
     val updatedAt: Instant,
     val deletedAt: Instant?
-): SimplerModel<Long> {
-    override fun id(): Long = id
+): SimplerModel<UUID> {
+    override fun id(): UUID = id
     override fun version(): Int = version
     override fun createdAt(): Instant = createdAt
     override fun updatedAt(): Instant = updatedAt

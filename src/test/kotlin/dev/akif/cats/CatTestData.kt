@@ -1,12 +1,16 @@
 package dev.akif.cats
 
 import dev.akif.crud.CRUDTestData
-import kotlin.random.Random
+import java.util.UUID
 
-class CatTestData : CRUDTestData<Long, CatEntity, Cat, CreateCat, UpdateCat>() {
+class CatTestData : CRUDTestData<UUID, CatEntity, Cat, CreateCat, UpdateCat>() {
+    private val catId1 = UUID.randomUUID()
+    private val catId2 = UUID.randomUUID()
+    private val catId3 = UUID.randomUUID()
+
     override val testEntity1: CatEntity =
         CatEntity(
-            id = 1,
+            id = catId1,
             name = "Cookie",
             breed = "Tabby",
             age = 4,
@@ -18,7 +22,7 @@ class CatTestData : CRUDTestData<Long, CatEntity, Cat, CreateCat, UpdateCat>() {
 
     override val testEntity2: CatEntity =
         CatEntity(
-            id = 2,
+            id = catId2,
             name = "Kitty",
             breed = "Persian",
             age = 3,
@@ -30,7 +34,7 @@ class CatTestData : CRUDTestData<Long, CatEntity, Cat, CreateCat, UpdateCat>() {
 
     override val testEntity3: CatEntity =
         CatEntity(
-            id = 3,
+            id = catId3,
             name = "Meowth",
             breed = "Scottish Fold",
             age = 2,
@@ -44,9 +48,7 @@ class CatTestData : CRUDTestData<Long, CatEntity, Cat, CreateCat, UpdateCat>() {
         emptyArray()
 
     override fun areDuplicates(e1: CatEntity, e2: CatEntity): Boolean =
-        e1.name == e2.name
-                && e1.breed == e2.breed
-                && e1.age == e2.age
+        e1.name == e2.name && e1.age == e2.age
 
     override fun copy(entity: CatEntity): CatEntity =
         CatEntity(
@@ -60,8 +62,8 @@ class CatTestData : CRUDTestData<Long, CatEntity, Cat, CreateCat, UpdateCat>() {
             deletedAt = entity.deletedAt
         )
 
-    override fun randomId(): Long =
-        Random.nextLong()
+    override fun randomId(): UUID =
+        UUID.randomUUID()
 
     override fun entityToCreateModel(entity: CatEntity): CreateCat =
         CreateCat(
@@ -73,14 +75,12 @@ class CatTestData : CRUDTestData<Long, CatEntity, Cat, CreateCat, UpdateCat>() {
     override fun entityToUpdateModelWithModifications(entity: CatEntity): UpdateCat =
         UpdateCat(
             name = "${entity.name}-updated",
-            breed = "${entity.breed}-updated",
             age = entity.age?.plus(1) ?: 1
         )
 
     override fun entityToUpdateModelWithNoModifications(entity: CatEntity): UpdateCat =
         UpdateCat(
             name = entity.name!!,
-            breed = entity.breed!!,
             age = entity.age!!
         )
 }
