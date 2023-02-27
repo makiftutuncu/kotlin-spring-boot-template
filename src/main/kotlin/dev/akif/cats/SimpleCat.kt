@@ -109,26 +109,15 @@ interface SimpleCatRepository: SimpleRepository<UUID, SimpleCatEntity>
 
 @JakartaEntity
 class SimpleCatEntity(
-    @Id override var id: UUID?,
-    var name: String?,
-    var breed: String?,
-    var age: Int?,
-    override var version: Int?,
-    override var createdAt: Instant?,
-    override var updatedAt: Instant?,
-    override var deletedAt: Instant?
-): SimpleEntity<UUID, SimpleCatEntity>(id, version, createdAt, updatedAt, deletedAt) {
-    constructor() : this(
-        id = null,
-        name = null,
-        breed = null,
-        age = null,
-        version = null,
-        createdAt = null,
-        updatedAt = null,
-        deletedAt = null
-    )
-}
+    @Id override var id: UUID? = null,
+    var name: String? = null,
+    var breed: String? = null,
+    var age: Int? = null,
+    override var version: Int? = null,
+    override var createdAt: Instant? = null,
+    override var updatedAt: Instant? = null,
+    override var deletedAt: Instant? = null
+): SimpleEntity<UUID>(id, version, createdAt, updatedAt, deletedAt)
 
 data class SimpleCat(
     val id: UUID,

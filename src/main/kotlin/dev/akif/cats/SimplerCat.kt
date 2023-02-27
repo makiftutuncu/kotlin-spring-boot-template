@@ -68,42 +68,6 @@ class SimplerCatMapper: SimplerMapper<UUID, SimplerCatEntity, SimplerCat> {
             age = updateModel.age
         }
     }
-
-    override fun createDTOToCreateModel(createDTO: SimplerCat): SimplerCat =
-        SimplerCat(
-            id = createDTO.id,
-            name = createDTO.name,
-            breed = createDTO.breed,
-            age = createDTO.age,
-            version = 0,
-            createdAt = createDTO.createdAt,
-            updatedAt = createDTO.updatedAt,
-            deletedAt = createDTO.deletedAt
-        )
-
-    override fun modelToDTO(model: SimplerCat): SimplerCat =
-        SimplerCat(
-            id = model.id,
-            name = model.name,
-            breed = model.breed,
-            age = model.age,
-            version = model.version,
-            createdAt = model.createdAt,
-            updatedAt = model.updatedAt,
-            deletedAt = model.deletedAt
-        )
-
-    override fun updateDTOToUpdateModel(updateDTO: SimplerCat): SimplerCat =
-        SimplerCat(
-            id = updateDTO.id,
-            name = updateDTO.name,
-            breed = updateDTO.breed,
-            age = updateDTO.age,
-            version = updateDTO.version,
-            createdAt = updateDTO.createdAt,
-            updatedAt = updateDTO.updatedAt,
-            deletedAt = updateDTO.deletedAt
-        )
 }
 
 @Repository
@@ -111,26 +75,15 @@ interface SimplerCatRepository: SimplerRepository<UUID, SimplerCatEntity>
 
 @JakartaEntity
 class SimplerCatEntity(
-    @Id override var id: UUID?,
-    var name: String?,
-    var breed: String?,
-    var age: Int?,
-    override var version: Int?,
-    override var createdAt: Instant?,
-    override var updatedAt: Instant?,
-    override var deletedAt: Instant?
-): SimplerEntity<UUID, SimplerCatEntity>(id, version, createdAt, updatedAt, deletedAt) {
-    constructor() : this(
-        id = null,
-        name = null,
-        breed = null,
-        age = null,
-        version = null,
-        createdAt = null,
-        updatedAt = null,
-        deletedAt = null
-    )
-}
+    @Id override var id: UUID? = null,
+    var name: String? = null,
+    var breed: String? = null,
+    var age: Int? = null,
+    override var version: Int? = null,
+    override var createdAt: Instant? = null,
+    override var updatedAt: Instant? = null,
+    override var deletedAt: Instant? = null
+): SimplerEntity<UUID>(id, version, createdAt, updatedAt, deletedAt)
 
 data class SimplerCat(
     val id: UUID,

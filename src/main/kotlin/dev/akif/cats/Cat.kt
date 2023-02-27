@@ -104,7 +104,7 @@ class CatEntity(
     override var createdAt: Instant?,
     override var updatedAt: Instant?,
     override var deletedAt: Instant?
-): CRUDEntity<UUID, CatEntity>(id, version, createdAt, updatedAt, deletedAt) {
+): CRUDEntity<UUID>(id, version, createdAt, updatedAt, deletedAt) {
     constructor() : this(
         id = null,
         name = null,
