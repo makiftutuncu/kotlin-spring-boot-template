@@ -2,33 +2,43 @@ package dev.akif.cats
 
 import dev.akif.crud.*
 import dev.akif.crud.common.InstantProvider
+import io.swagger.v3.oas.annotations.tags.Tag
 import jakarta.persistence.Id
 import org.springframework.stereotype.Component
 import org.springframework.stereotype.Repository
 import org.springframework.stereotype.Service
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
-import jakarta.persistence.Entity as JakartaEntity
 import java.time.Instant
-import kotlin.math.absoluteValue
-import kotlin.random.Random
+import java.util.*
+import jakarta.persistence.Entity as JakartaEntity
 
 @RestController
 @RequestMapping("/cats")
-class CatController(service: CatService, mapper: CatMapper): CRUDController<Long, CatEntity, Cat, CatDTO, CreateCat, UpdateCat, CreateCatDTO, UpdateCatDTO, CatMapper, CatMapper, CatService>("Cat", service, mapper)
+@Tag(name = "Cats", description = "CRUD operations for cat entities")
+class CatController(service: CatService, mapper: CatMapper): CRUDController<UUID, CatEntity, Cat, CatDTO, CreateCat, UpdateCat, CreateCatDTO, UpdateCatDTO, CatMapper, CatMapper, CatRepository, CatService>(
+    typeName = "Cat",
+    service = service,
+    mapper = mapper
+)
 
 @Service
 class CatService(
     instantProvider: InstantProvider,
-    repository: CRUDRepository<Long, CatEntity>,
+    repository: CRUDRepository<UUID, CatEntity>,
     mapper: CatMapper
-): CRUDService<Long, CatEntity, Cat, CreateCat, UpdateCat, CatMapper>("Cat", instantProvider, repository, mapper)
+): CRUDService<UUID, CatEntity, Cat, CreateCat, UpdateCat, CatRepository, CatMapper>(
+    typeName = "Cat",
+    instantProvider = instantProvider,
+    crudRepository = repository,
+    mapper = mapper
+)
 
 @Component
-class CatMapper: CRUDMapper<Long, CatEntity, Cat, CreateCat, UpdateCat>, CRUDDTOMapper<Long, Cat, CatDTO, CreateCat, UpdateCat, CreateCatDTO, UpdateCatDTO> {
+class CatMapper: CRUDMapper<UUID, CatEntity, Cat, CreateCat, UpdateCat>, CRUDDTOMapper<UUID, Cat, CatDTO, CreateCat, UpdateCat, CreateCatDTO, UpdateCatDTO> {
     override fun entityToBeCreatedFrom(createModel: CreateCat, now: Instant): CatEntity =
         CatEntity(
-            id = Random.nextInt().absoluteValue.toLong(),
+            id = UUID.randomUUID(),
             name = createModel.name,
             breed = createModel.breed,
             age = createModel.age,
@@ -53,7 +63,6 @@ class CatMapper: CRUDMapper<Long, CatEntity, Cat, CreateCat, UpdateCat>, CRUDDTO
     override fun updateEntityWith(entity: CatEntity, updateModel: UpdateCat) {
         entity.apply {
             name = updateModel.name
-            breed = updateModel.breed
             age = updateModel.age
         }
     }
@@ -78,17 +87,16 @@ class CatMapper: CRUDMapper<Long, CatEntity, Cat, CreateCat, UpdateCat>, CRUDDTO
     override fun updateDTOToUpdateModel(updateDTO: UpdateCatDTO): UpdateCat =
         UpdateCat(
             name = updateDTO.name,
-            breed = updateDTO.breed,
             age = updateDTO.age
         )
 }
 
 @Repository
-interface CatRepository: CRUDRepository<Long, CatEntity>
+interface CatRepository: CRUDRepository<UUID, CatEntity>
 
 @JakartaEntity
 class CatEntity(
-    @Id override var id: Long?,
+    @Id override var id: UUID?,
     var name: String?,
     var breed: String?,
     var age: Int?,
@@ -96,7 +104,7 @@ class CatEntity(
     override var createdAt: Instant?,
     override var updatedAt: Instant?,
     override var deletedAt: Instant?
-): CRUDEntity<Long, CatEntity>(id, version, createdAt, updatedAt, deletedAt) {
+): CRUDEntity<UUID, CatEntity>(id, version, createdAt, updatedAt, deletedAt) {
     constructor() : this(
         id = null,
         name = null,
@@ -115,10 +123,10 @@ class CatEntity(
 
 data class CreateCat(val name: String, val breed: String, val age: Int): CRUDCreateModel
 
-data class UpdateCat(val name: String, val breed: String, val age: Int): CRUDUpdateModel
+data class UpdateCat(val name: String, val age: Int): CRUDUpdateModel
 
 data class Cat(
-    val id: Long,
+    val id: UUID,
     val name: String,
     val breed: String,
     val age: Int,
@@ -126,8 +134,8 @@ data class Cat(
     val createdAt: Instant,
     val updatedAt: Instant,
     val deletedAt: Instant?
-): CRUDModel<Long> {
-    override fun id(): Long = id
+): CRUDModel<UUID> {
+    override fun id(): UUID = id
     override fun version(): Int = version
     override fun createdAt(): Instant = createdAt
     override fun updatedAt(): Instant = updatedAt
@@ -136,17 +144,17 @@ data class Cat(
 
 data class CreateCatDTO(val name: String, val breed: String, val age: Int): CRUDCreateDTO
 
-data class UpdateCatDTO(val name: String, val breed: String, val age: Int): CRUDUpdateDTO
+data class UpdateCatDTO(val name: String, val age: Int): CRUDUpdateDTO
 
 data class CatDTO(
-    val id: Long,
+    val id: UUID,
     val name: String,
     val breed: String,
     val age: Int,
     val createdAt: Instant,
     val updatedAt: Instant
-): CRUDDTO<Long> {
-    override fun id(): Long = id
+): CRUDDTO<UUID> {
+    override fun id(): UUID = id
     override fun createdAt(): Instant = createdAt
     override fun updatedAt(): Instant = updatedAt
 }

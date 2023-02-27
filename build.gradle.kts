@@ -37,16 +37,18 @@ tasks.withType<KotlinCompile> {
     }
 }
 
+val springBootCrudVersion = "0.3.3"
+val springdocOpenApiVersion = "2.0.2"
+val springBootVersion = "3.0.3"
 val h2Version = "2.1.214"
-val springBootVersion = "3.0.2"
-val springBootCrudVersion = "0.3.2"
 
 dependencies {
     implementation(kotlin("reflect"))
     implementation(kotlin("stdlib"))
-    implementation("org.springframework.boot:spring-boot-starter-web:$springBootVersion")
-    implementation("org.springframework.boot:spring-boot-starter-data-jpa:$springBootVersion")
     implementation("dev.akif:spring-boot-crud-api:$springBootCrudVersion")
+    implementation("org.springdoc:springdoc-openapi-starter-webmvc-ui:$springdocOpenApiVersion")
+    implementation("org.springframework.boot:spring-boot-starter-data-jpa:$springBootVersion")
+    implementation("org.springframework.boot:spring-boot-starter-web:$springBootVersion")
     runtimeOnly("com.h2database:h2:$h2Version")
     testImplementation("org.springframework.boot:spring-boot-starter-test:$springBootVersion")
     testImplementation("dev.akif:spring-boot-crud-test:$springBootCrudVersion")

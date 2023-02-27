@@ -1,7 +1,9 @@
 package dev.akif.cats
 
+import dev.akif.crud.CRUDRepository
 import dev.akif.crud.common.InstantProvider
 import dev.akif.crud.simplest.*
+import io.swagger.v3.oas.annotations.tags.Tag
 import jakarta.persistence.Id
 import org.springframework.stereotype.Component
 import org.springframework.stereotype.Repository
@@ -10,25 +12,34 @@ import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
 import jakarta.persistence.Entity as JakartaEntity
 import java.time.Instant
-import kotlin.math.absoluteValue
-import kotlin.random.Random
+import java.util.*
 
 @RestController
 @RequestMapping("/simplest-cats")
-class SimplestCatController(service: SimplestCatService, mapper: SimplestCatMapper): SimplestController<Long, SimplestCat, SimplestCatMapper, SimplestCatService>("SimplestCat", service, mapper)
+@Tag(name = "Simplest Cats", description = "CRUD operations for the simplest cat entities")
+class SimplestCatController(service: SimplestCatService, mapper: SimplestCatMapper): SimplestController<UUID, SimplestCat, SimplestCatMapper, SimplestCatRepository, SimplestCatService>(
+    typeName = "SimplestCat",
+    service = service,
+    mapper = mapper
+)
 
 @Service
 class SimplestCatService(
     instantProvider: InstantProvider,
-    repository: SimplestRepository<Long, SimplestCat>,
+    crudRepository: CRUDRepository<UUID, SimplestCat>,
     mapper: SimplestCatMapper
-): SimplestService<Long, SimplestCat, SimplestCatMapper>("SimplestCat", instantProvider, repository, mapper)
+): SimplestService<UUID, SimplestCat, SimplestCatRepository, SimplestCatMapper>(
+    typeName = "SimplestCat",
+    instantProvider = instantProvider,
+    crudRepository = crudRepository,
+    mapper = mapper
+)
 
 @Component
-class SimplestCatMapper: SimplestMapper<Long, SimplestCat> {
+class SimplestCatMapper: SimplestMapper<UUID, SimplestCat> {
     override fun entityToBeCreatedFrom(createModel: SimplestCat, now: Instant): SimplestCat =
         SimplestCat(
-            id = Random.nextInt().absoluteValue.toLong(),
+            id = UUID.randomUUID(),
             name = createModel.name,
             breed = createModel.breed,
             age = createModel.age,
@@ -96,11 +107,11 @@ class SimplestCatMapper: SimplestMapper<Long, SimplestCat> {
 }
 
 @Repository
-interface SimplestCatRepository: SimplestRepository<Long, SimplestCat>
+interface SimplestCatRepository: SimplestRepository<UUID, SimplestCat>
 
 @JakartaEntity
 class SimplestCat(
-    @Id override var id: Long?,
+    @Id override var id: UUID?,
     var name: String?,
     var breed: String?,
     var age: Int?,
@@ -108,7 +119,7 @@ class SimplestCat(
     override var createdAt: Instant?,
     override var updatedAt: Instant?,
     override var deletedAt: Instant?
-): SimplestEntity<Long, SimplestCat>(id, version, createdAt, updatedAt, deletedAt) {
+): SimplestEntity<UUID, SimplestCat>(id, version, createdAt, updatedAt, deletedAt) {
     constructor() : this(
         id = null,
         name = null,
