@@ -1,6 +1,5 @@
 package dev.akif.cats
 
-import dev.akif.crud.CRUDRepository
 import dev.akif.crud.CRUDServiceTest
 import org.junit.jupiter.api.DisplayName
 import java.util.UUID
@@ -11,6 +10,6 @@ class CatServiceTest : CRUDServiceTest<UUID, CatEntity, Cat, CreateCat, UpdateCa
     mapper = CatMapper(),
     testData = CatTestData()
 ) {
-    override fun buildService(repository: CRUDRepository<UUID, CatEntity>, mapper: CatMapper): CatService =
-        CatService(testData.instantProvider, repository, mapper)
+    override fun buildService(mapper: CatMapper, testData: CatTestData): CatService =
+        CatService(testData.instantProvider, testData.repository, mapper)
 }

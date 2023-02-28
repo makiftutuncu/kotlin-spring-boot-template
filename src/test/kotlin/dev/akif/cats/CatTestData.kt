@@ -3,7 +3,7 @@ package dev.akif.cats
 import dev.akif.crud.CRUDTestData
 import java.util.UUID
 
-class CatTestData : CRUDTestData<UUID, CatEntity, Cat, CreateCat, UpdateCat>() {
+class CatTestData : CRUDTestData<UUID, CatEntity, Cat, CreateCat, UpdateCat, CatTestData>(typeName = "Cat") {
     private val catId1 = UUID.randomUUID()
     private val catId2 = UUID.randomUUID()
     private val catId3 = UUID.randomUUID()
@@ -48,7 +48,9 @@ class CatTestData : CRUDTestData<UUID, CatEntity, Cat, CreateCat, UpdateCat>() {
         emptyArray()
 
     override fun areDuplicates(e1: CatEntity, e2: CatEntity): Boolean =
-        e1.name == e2.name && e1.age == e2.age
+        e1.name == e2.name
+                && e1.breed == e2.breed
+                && e1.age == e2.age
 
     override fun copy(entity: CatEntity): CatEntity =
         CatEntity(
