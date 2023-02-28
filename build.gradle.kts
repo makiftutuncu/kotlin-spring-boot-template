@@ -21,6 +21,7 @@ idea {
 
 repositories {
     mavenCentral()
+    mavenLocal()
 }
 
 java {
@@ -37,7 +38,7 @@ tasks.withType<KotlinCompile> {
     }
 }
 
-val springBootCrudVersion = "0.3.3"
+val springBootCrudVersion = "0.3.4"
 val springdocOpenApiVersion = "2.0.2"
 val springBootVersion = "3.0.3"
 val h2Version = "2.1.214"
