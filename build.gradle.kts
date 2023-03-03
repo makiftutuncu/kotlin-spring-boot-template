@@ -5,12 +5,14 @@ import org.gradle.api.tasks.testing.logging.TestLogEvent
 
 plugins {
     idea
+    id("org.springframework.boot") version "3.0.3"
+    id("io.spring.dependency-management") version "1.1.0"
     kotlin("jvm") version "1.8.0"
     kotlin("plugin.spring") version "1.8.0"
 }
 
 group = "dev.akif"
-version = "0.0.1-SNAPSHOT"
+version = "1.0.0"
 
 idea {
     module {
@@ -38,20 +40,19 @@ tasks.withType<KotlinCompile> {
     }
 }
 
-val springBootCrudVersion = "0.3.4"
+val springBootCrudVersion = "0.4.0"
 val springdocOpenApiVersion = "2.0.2"
-val springBootVersion = "3.0.3"
-val h2Version = "2.1.214"
 
 dependencies {
     implementation(kotlin("reflect"))
     implementation(kotlin("stdlib"))
     implementation("dev.akif:spring-boot-crud-api:$springBootCrudVersion")
     implementation("org.springdoc:springdoc-openapi-starter-webmvc-ui:$springdocOpenApiVersion")
-    implementation("org.springframework.boot:spring-boot-starter-data-jpa:$springBootVersion")
-    implementation("org.springframework.boot:spring-boot-starter-web:$springBootVersion")
-    runtimeOnly("com.h2database:h2:$h2Version")
-    testImplementation("org.springframework.boot:spring-boot-starter-test:$springBootVersion")
+    implementation("org.springframework.boot:spring-boot-starter-data-jpa")
+    implementation("org.springframework.boot:spring-boot-starter-web")
+    implementation("org.flywaydb:flyway-core")
+    runtimeOnly("org.postgresql:postgresql")
+    testImplementation("org.springframework.boot:spring-boot-starter-test")
     testImplementation("dev.akif:spring-boot-crud-test:$springBootCrudVersion")
 }
 

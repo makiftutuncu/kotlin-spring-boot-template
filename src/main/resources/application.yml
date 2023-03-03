@@ -1,0 +1,38 @@
+db:
+  host: ${CATS_API_DB_HOST:localhost}
+  port: ${CATS_API_DB_PORT:5432}
+  name: ${CATS_API_DB_NAME:cats-api}
+  user: ${CATS_API_DB_USER:cats-api}
+  pass: ${CATS_API_DB_PASS:cats-api}
+
+logging:
+  level:
+    root: INFO
+    dev.akif: TRACE
+
+server:
+  error:
+    whitelabel:
+      enabled: false
+
+  port: ${CATS_API_PORT:8080}
+
+spring:
+  datasource:
+    url: jdbc:postgresql://${db.host}:${db.port}/${db.name}
+    username: ${db.user}
+    password: ${db.pass}
+
+  flyway:
+    url: jdbc:postgresql://${db.host}:${db.port}/${db.name}
+    user: ${db.user}
+    password: ${db.pass}
+
+  jpa:
+    show-sql: true
+    open-in-view: false
+
+springdoc:
+  swagger-ui:
+    disable-swagger-default-url: true
+    try-it-out-enabled: true

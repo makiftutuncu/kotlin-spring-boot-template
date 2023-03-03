@@ -1,0 +1,41 @@
+version: '3'
+
+services:
+  cats-api-db:
+    container_name: cats-api-db
+    image: postgres:15.2-alpine
+    ports:
+      - "${CATS_API_DB_PORT:-5432}:5432"
+    volumes:
+      - cats-api-db:/var/lib/postgresql/data
+    environment:
+      - "POSTGRES_USER=${CATS_API_DB_USER:-cats-api}"
+      - "POSTGRES_PASSWORD=${CATS_API_DB_PASS:-cats-api}"
+      - "POSTGRES_DB=${CATS_API_DB_NAME:-cats-api}"
+    networks:
+      - cats-api-network
+  cats-api:
+    container_name: cats-api
+    image: cats-api
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "${CATS_API_PORT:-8080}:8080"
+    depends_on:
+      - cats-api-db
+    networks:
+      - cats-api-network
+    environment:
+      - "CATS_API_DB_HOST=cats-api-db"
+      - "CATS_API_DB_NAME=${CATS_API_DB_NAME:-cats-api}"
+      - "CATS_API_DB_USER=${CATS_API_DB_USER:-cats-api}"
+      - "CATS_API_DB_PASSWORD=${CATS_API_DB_PASSWORD:-cats-api}"
+
+volumes:
+  cats-api-db:
+    driver: local
+
+networks:
+  cats-api-network:
+    driver: bridge
