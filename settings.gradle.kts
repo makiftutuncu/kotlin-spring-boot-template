@@ -1,1 +1,1 @@
-rootProject.name = "kotlin-spring-boot-template"
+rootProject.name = "cats-api"

@@ -15,8 +15,8 @@ class CatTestData : CRUDTestData<UUID, CatEntity, Cat, CreateCat, UpdateCat, Cat
             breed = "Tabby",
             age = 4,
             version = 0,
-            createdAt = now,
-            updatedAt = now,
+            createdAt = now(),
+            updatedAt = now(),
             deletedAt = null
         )
 
@@ -27,8 +27,8 @@ class CatTestData : CRUDTestData<UUID, CatEntity, Cat, CreateCat, UpdateCat, Cat
             breed = "Persian",
             age = 3,
             version = 0,
-            createdAt = now.plusSeconds(1),
-            updatedAt = now.plusSeconds(1),
+            createdAt = now().plusSeconds(1),
+            updatedAt = now().plusSeconds(1),
             deletedAt = null
         )
 
@@ -39,8 +39,8 @@ class CatTestData : CRUDTestData<UUID, CatEntity, Cat, CreateCat, UpdateCat, Cat
             breed = "Scottish Fold",
             age = 2,
             version = 0,
-            createdAt = now.plusSeconds(2),
-            updatedAt = now.plusSeconds(2),
+            createdAt = now().plusSeconds(2),
+            updatedAt = now().plusSeconds(2),
             deletedAt = null
         )
 
