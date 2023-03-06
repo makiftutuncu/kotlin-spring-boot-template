@@ -1,4 +1,4 @@
-package dev.akif.cats
+package dev.akif.cats.cat
 
 import dev.akif.crud.CRUDEntity
 import jakarta.persistence.Entity

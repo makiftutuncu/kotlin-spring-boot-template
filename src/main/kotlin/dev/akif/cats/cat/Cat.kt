@@ -1,6 +1,6 @@
-package dev.akif.cats
+package dev.akif.cats.cat
 
-import dev.akif.crud.CRUDModel
+import dev.akif.crud.*
 import java.time.Instant
 import java.util.UUID
 
@@ -20,3 +20,7 @@ data class Cat(
     override fun updatedAt(): Instant = updatedAt
     override fun deletedAt(): Instant? = deletedAt
 }
+
+data class CreateCat(val name: String, val breed: String, val age: Int) : CRUDCreateModel
+
+data class UpdateCat(val name: String, val age: Int) : CRUDUpdateModel

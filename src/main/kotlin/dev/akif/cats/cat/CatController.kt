@@ -1,4 +1,4 @@
-package dev.akif.cats
+package dev.akif.cats.cat
 
 import dev.akif.crud.CRUDController
 import io.swagger.v3.oas.annotations.tags.Tag

@@ -1,5 +1,6 @@
-package dev.akif.cats
+package dev.akif.cats.cat
 
+import dev.akif.cats.cat.*
 import dev.akif.crud.CRUDServiceTest
 import org.junit.jupiter.api.DisplayName
 import java.util.UUID
