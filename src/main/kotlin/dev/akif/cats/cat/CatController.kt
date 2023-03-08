@@ -8,7 +8,7 @@ import java.util.UUID
 
 @RestController
 @RequestMapping("/cats")
-@Tag(name = "Cats", description = "CRUD operations for cat entities")
+@Tag(name = "Cats", description = "CRUD operations for cats")
 class CatController(service: CatService, mapper: CatDTOMapper) :
     CRUDController<UUID, CatEntity, Cat, CatDTO, CreateCat, UpdateCat, CreateCatDTO, UpdateCatDTO, CatMapper, CatDTOMapper, CatRepository, CatService>(
         typeName = "Cat",

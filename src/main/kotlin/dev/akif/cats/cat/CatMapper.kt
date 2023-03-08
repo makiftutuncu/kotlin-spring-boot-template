@@ -1,12 +1,15 @@
 package dev.akif.cats.cat
 
+import dev.akif.cats.toy.ToyDTOMapper
+import dev.akif.cats.toy.ToyMapper
 import dev.akif.crud.*
+import dev.akif.crud.common.Parameters
 import org.springframework.stereotype.Component
 import java.time.Instant
 import java.util.UUID
 
 @Component
-class CatMapper : CRUDMapper<UUID, CatEntity, Cat, CreateCat, UpdateCat> {
+class CatMapper(private val toyMapper: ToyMapper) : CRUDMapper<UUID, CatEntity, Cat, CreateCat, UpdateCat> {
     override fun entityToBeCreatedFrom(createModel: CreateCat, now: Instant): CatEntity =
         CatEntity(
             id = UUID.randomUUID(),
@@ -21,13 +24,14 @@ class CatMapper : CRUDMapper<UUID, CatEntity, Cat, CreateCat, UpdateCat> {
 
     override fun entityToModel(entity: CatEntity): Cat =
         Cat(
-            id = requireNotNull(entity.id) { "CatEntity.id was null" },
-            name = requireNotNull(entity.name) { "CatEntity.name was null" },
-            breed = requireNotNull(entity.breed) { "CatEntity.breed was null" },
-            age = requireNotNull(entity.age) { "CatEntity.age was null" },
-            version = requireNotNull(entity.version) { "CatEntity.version was null" },
-            createdAt = requireNotNull(entity.createdAt) { "CatEntity.createdAt was null" },
-            updatedAt = requireNotNull(entity.updatedAt) { "CatEntity.updatedAt was null" },
+            id = requireNotNull(entity.id) { "id was null." },
+            name = requireNotNull(entity.name) { "name was null." },
+            breed = requireNotNull(entity.breed) { "breed was null." },
+            age = requireNotNull(entity.age) { "age was null." },
+            toys = requireNotNull(entity.toys?.map { toyMapper.entityToModel(it) }) { "toys were null." },
+            version = requireNotNull(entity.version) { "version was null." },
+            createdAt = requireNotNull(entity.createdAt) { "createdAt was null." },
+            updatedAt = requireNotNull(entity.updatedAt) { "updatedAt was null." },
             deletedAt = entity.deletedAt
         )
 
@@ -40,25 +44,26 @@ class CatMapper : CRUDMapper<UUID, CatEntity, Cat, CreateCat, UpdateCat> {
 }
 
 @Component
-class CatDTOMapper : CRUDDTOMapper<UUID, Cat, CatDTO, CreateCat, UpdateCat, CreateCatDTO, UpdateCatDTO> {
-    override fun createDTOToCreateModel(createDTO: CreateCatDTO): CreateCat =
+class CatDTOMapper(private val toyDTOMapper: ToyDTOMapper) : CRUDDTOMapper<UUID, Cat, CatDTO, CreateCat, UpdateCat, CreateCatDTO, UpdateCatDTO> {
+    override fun createDTOToCreateModel(createDTO: CreateCatDTO, parameters: Parameters): CreateCat =
         CreateCat(
             name = createDTO.name,
             breed = createDTO.breed,
             age = createDTO.age
         )
 
-    override fun modelToDTO(model: Cat): CatDTO =
+    override fun modelToDTO(model: Cat, parameters: Parameters): CatDTO =
         CatDTO(
             id = model.id,
             name = model.name,
             breed = model.breed,
             age = model.age,
+            toys = model.toys.map { toyDTOMapper.modelToDTO(it, parameters) },
             createdAt = model.createdAt,
             updatedAt = model.updatedAt
         )
 
-    override fun updateDTOToUpdateModel(updateDTO: UpdateCatDTO): UpdateCat =
+    override fun updateDTOToUpdateModel(updateDTO: UpdateCatDTO, parameters: Parameters): UpdateCat =
         UpdateCat(
             name = updateDTO.name,
             age = updateDTO.age

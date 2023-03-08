@@ -1,16 +1,12 @@
-package dev.akif.cats.cat
+package dev.akif.cats.toy
 
-import dev.akif.cats.toy.Toy
 import dev.akif.crud.*
 import java.time.Instant
 import java.util.UUID
 
-data class Cat(
+data class Toy(
     val id: UUID,
     val name: String,
-    val breed: String,
-    val age: Int,
-    val toys: List<Toy>,
     val version: Int,
     val createdAt: Instant,
     val updatedAt: Instant,
@@ -23,6 +19,6 @@ data class Cat(
     override fun deletedAt(): Instant? = deletedAt
 }
 
-data class CreateCat(val name: String, val breed: String, val age: Int) : CRUDCreateModel
+data class CreateToy(val catId: UUID, val name: String) : CRUDCreateModel
 
-data class UpdateCat(val name: String, val age: Int) : CRUDUpdateModel
+data class UpdateToy(val catId: UUID, val name: String) : CRUDUpdateModel

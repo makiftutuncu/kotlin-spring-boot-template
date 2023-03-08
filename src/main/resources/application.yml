@@ -31,6 +31,9 @@ spring:
   jpa:
     show-sql: true
     open-in-view: false
+    properties:
+      hibernate:
+        format_sql: true
 
 springdoc:
   swagger-ui:

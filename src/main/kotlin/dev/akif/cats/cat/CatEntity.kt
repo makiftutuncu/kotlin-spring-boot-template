@@ -1,25 +1,29 @@
 package dev.akif.cats.cat
 
+import dev.akif.cats.toy.ToyEntity
 import dev.akif.crud.CRUDEntity
-import jakarta.persistence.Entity
-import jakarta.persistence.Id
-import jakarta.persistence.Table
+import jakarta.persistence.*
 import java.time.Instant
 import java.util.UUID
 
 @Entity
 @Table(name = "cats")
 class CatEntity(
-    @Id override var id: UUID? = null,
-    var name: String? = null,
-    var breed: String? = null,
-    var age: Int? = null,
-    override var version: Int? = null,
-    override var createdAt: Instant? = null,
-    override var updatedAt: Instant? = null,
-    override var deletedAt: Instant? = null
+    @Id
+    override var id: UUID?,
+    var name: String?,
+    var breed: String?,
+    var age: Int?,
+    override var version: Int?,
+    override var createdAt: Instant?,
+    override var updatedAt: Instant?,
+    override var deletedAt: Instant?
 ) : CRUDEntity<UUID>(id, version, createdAt, updatedAt, deletedAt) {
+    @JoinColumn(name = "cat_id", referencedColumnName = "id", nullable = false, insertable = false, updatable = false)
+    @OneToMany(cascade = [CascadeType.ALL])
+    var toys: List<ToyEntity> = mutableListOf()
+
     override fun toString(): String {
-        return "CatEntity(id=$id, name=$name, breed=$breed, age=$age, version=$version, createdAt=$createdAt, updatedAt=$updatedAt, deletedAt=$deletedAt)"
+        return "CatEntity(id=$id, name=$name, breed=$breed, age=$age, toys=$toys, version=$version, createdAt=$createdAt, updatedAt=$updatedAt, deletedAt=$deletedAt)"
     }
 }

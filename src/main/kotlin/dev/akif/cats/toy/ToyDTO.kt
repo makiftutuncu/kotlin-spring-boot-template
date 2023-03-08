@@ -1,16 +1,12 @@
-package dev.akif.cats.cat
+package dev.akif.cats.toy
 
-import dev.akif.cats.toy.ToyDTO
 import dev.akif.crud.*
 import java.time.Instant
 import java.util.UUID
 
-data class CatDTO(
+data class ToyDTO(
     val id: UUID,
     val name: String,
-    val breed: String,
-    val age: Int,
-    val toys: List<ToyDTO>,
     val createdAt: Instant,
     val updatedAt: Instant
 ) : CRUDDTO<UUID> {
@@ -19,6 +15,6 @@ data class CatDTO(
     override fun updatedAt(): Instant = updatedAt
 }
 
-data class CreateCatDTO(val name: String, val breed: String, val age: Int) : CRUDCreateDTO
+data class CreateToyDTO(val name: String) : CRUDCreateDTO
 
-data class UpdateCatDTO(val name: String, val age: Int) : CRUDUpdateDTO
+data class UpdateToyDTO(val name: String) : CRUDUpdateDTO
