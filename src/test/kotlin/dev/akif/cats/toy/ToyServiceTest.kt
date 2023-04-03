@@ -1,16 +1,19 @@
 package dev.akif.cats.toy
 
+import dev.akif.cats.cat.CatMapper
+import dev.akif.cats.cat.CatService
+import dev.akif.cats.cat.InMemoryCatRepository
 import dev.akif.cats.toy.*
 import dev.akif.crud.CRUDServiceTest
 import org.junit.jupiter.api.DisplayName
-import java.util.UUID
 
 @DisplayName("ToyService")
-class ToyServiceTest : CRUDServiceTest<UUID, ToyEntity, Toy, CreateToy, UpdateToy, ToyMapper, ToyRepository, ToyService, ToyTestData>(
-    typeName = "Toy",
+class ToyServiceTest : CRUDServiceTest<Long, ToyEntity, Toy, CreateToy, UpdateToy, ToyMapper, ToyRepository, ToyService, ToyTestData>(
     mapper = ToyMapper(),
-    testData = ToyTestData()
+    testData = ToyTestData
 ) {
-    override fun buildService(mapper: ToyMapper, testData: ToyTestData): ToyService =
-        ToyService(testData.instantProvider, testData.repository, mapper)
+    override fun buildService(mapper: ToyMapper, testData: ToyTestData): ToyService {
+        val cats = CatService(testData.instantProvider, InMemoryCatRepository, CatMapper(mapper))
+        return ToyService(testData.instantProvider, InMemoryToyRepository, mapper, cats)
+    }
 }

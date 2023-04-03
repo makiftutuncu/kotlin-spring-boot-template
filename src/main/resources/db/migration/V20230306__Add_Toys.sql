@@ -1,6 +1,6 @@
 CREATE TABLE toys
 (
-    id         UUID PRIMARY KEY,
+    id         BIGSERIAL PRIMARY KEY,
     version    INTEGER                  NOT NULL DEFAULT 0,
     created_at TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT NOW(),
     updated_at TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT NOW(),

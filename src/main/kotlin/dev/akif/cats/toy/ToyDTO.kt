@@ -2,15 +2,14 @@ package dev.akif.cats.toy
 
 import dev.akif.crud.*
 import java.time.Instant
-import java.util.UUID
 
 data class ToyDTO(
-    val id: UUID,
+    val id: Long,
     val name: String,
     val createdAt: Instant,
     val updatedAt: Instant
-) : CRUDDTO<UUID> {
-    override fun id(): UUID = id
+) : CRUDDTO<Long> {
+    override fun id(): Long = id
     override fun createdAt(): Instant = createdAt
     override fun updatedAt(): Instant = updatedAt
 }

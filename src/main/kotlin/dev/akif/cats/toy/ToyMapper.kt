@@ -7,7 +7,7 @@ import java.time.Instant
 import java.util.UUID
 
 @Component
-class ToyMapper : CRUDMapper<UUID, ToyEntity, Toy, CreateToy, UpdateToy> {
+class ToyMapper : CRUDMapper<Long, ToyEntity, Toy, CreateToy, UpdateToy> {
     override fun entityToBeCreatedFrom(createModel: CreateToy, now: Instant): ToyEntity =
         ToyEntity(
             id = null,
@@ -22,6 +22,7 @@ class ToyMapper : CRUDMapper<UUID, ToyEntity, Toy, CreateToy, UpdateToy> {
     override fun entityToModel(entity: ToyEntity): Toy =
         Toy(
             id = requireNotNull(entity.id) { "id was null." },
+            catId = requireNotNull(entity.catId) { "catId was null." },
             name = requireNotNull(entity.name) { "name was null." },
             version = requireNotNull(entity.version) { "version was null." },
             createdAt = requireNotNull(entity.createdAt) { "createdAt was null." },
@@ -37,7 +38,7 @@ class ToyMapper : CRUDMapper<UUID, ToyEntity, Toy, CreateToy, UpdateToy> {
 }
 
 @Component
-class ToyDTOMapper : CRUDDTOMapper<UUID, Toy, ToyDTO, CreateToy, UpdateToy, CreateToyDTO, UpdateToyDTO> {
+class ToyDTOMapper : CRUDDTOMapper<Long, Toy, ToyDTO, CreateToy, UpdateToy, CreateToyDTO, UpdateToyDTO> {
     override fun createDTOToCreateModel(createDTO: CreateToyDTO, parameters: Parameters): CreateToy =
         CreateToy(
             catId = requireNotNull(parameters.pathVariable("catId") { UUID.fromString(it) }) { "catId path parameter is missing." },

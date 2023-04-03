@@ -5,14 +5,15 @@ import java.time.Instant
 import java.util.UUID
 
 data class Toy(
-    val id: UUID,
+    val id: Long,
+    val catId: UUID,
     val name: String,
     val version: Int,
     val createdAt: Instant,
     val updatedAt: Instant,
     val deletedAt: Instant?
-) : CRUDModel<UUID> {
-    override fun id(): UUID = id
+) : CRUDModel<Long> {
+    override fun id(): Long = id
     override fun version(): Int = version
     override fun createdAt(): Instant = createdAt
     override fun updatedAt(): Instant = updatedAt

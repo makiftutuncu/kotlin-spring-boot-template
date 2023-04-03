@@ -3,6 +3,7 @@ package dev.akif.cats.cat
 import dev.akif.cats.toy.ToyEntity
 import dev.akif.crud.CRUDEntity
 import jakarta.persistence.*
+import org.hibernate.annotations.Where
 import java.time.Instant
 import java.util.UUID
 
@@ -18,12 +19,12 @@ class CatEntity(
     override var createdAt: Instant?,
     override var updatedAt: Instant?,
     override var deletedAt: Instant?
-) : CRUDEntity<UUID>(id, version, createdAt, updatedAt, deletedAt) {
-    @JoinColumn(name = "cat_id", referencedColumnName = "id", nullable = false, insertable = false, updatable = false)
+) : CRUDEntity<UUID>() {
+    @JoinColumn(name = "catId", referencedColumnName = "id", nullable = false, insertable = false, updatable = false)
     @OneToMany(cascade = [CascadeType.ALL])
+    @Where(clause = "deleted_at IS NULL")
     var toys: List<ToyEntity> = mutableListOf()
 
-    override fun toString(): String {
-        return "CatEntity(id=$id, name=$name, breed=$breed, age=$age, toys=$toys, version=$version, createdAt=$createdAt, updatedAt=$updatedAt, deletedAt=$deletedAt)"
-    }
+    override fun toString(): String =
+        "CatEntity(id=$id, name=$name, breed=$breed, age=$age, toys=$toys, version=$version, createdAt=$createdAt, updatedAt=$updatedAt, deletedAt=$deletedAt)"
 }

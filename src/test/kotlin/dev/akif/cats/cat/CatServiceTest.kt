@@ -8,10 +8,9 @@ import java.util.UUID
 
 @DisplayName("CatService")
 class CatServiceTest : CRUDServiceTest<UUID, CatEntity, Cat, CreateCat, UpdateCat, CatMapper, CatRepository, CatService, CatTestData>(
-    typeName = "Cat",
     mapper = CatMapper(ToyMapper()),
-    testData = CatTestData()
+    testData = CatTestData
 ) {
     override fun buildService(mapper: CatMapper, testData: CatTestData): CatService =
-        CatService(testData.instantProvider, testData.repository, mapper)
+        CatService(testData.instantProvider, InMemoryCatRepository, mapper)
 }

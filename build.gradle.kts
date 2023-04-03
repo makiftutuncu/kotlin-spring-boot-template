@@ -47,6 +47,7 @@ val springdocOpenApiVersion = "2.0.2"
 dependencies {
     implementation(kotlin("reflect"))
     implementation(kotlin("stdlib"))
+    implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
     implementation("dev.akif:spring-boot-crud-api:$springBootCrudVersion")
     implementation("org.springdoc:springdoc-openapi-starter-webmvc-ui:$springdocOpenApiVersion")
     implementation("org.springframework.boot:spring-boot-starter-data-jpa")
