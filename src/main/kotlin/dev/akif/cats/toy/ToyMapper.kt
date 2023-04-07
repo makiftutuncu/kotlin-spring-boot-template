@@ -21,12 +21,12 @@ class ToyMapper : CRUDMapper<Long, ToyEntity, Toy, CreateToy, UpdateToy> {
 
     override fun entityToModel(entity: ToyEntity): Toy =
         Toy(
-            id = requireNotNull(entity.id) { "id was null." },
-            catId = requireNotNull(entity.catId) { "catId was null." },
-            name = requireNotNull(entity.name) { "name was null." },
-            version = requireNotNull(entity.version) { "version was null." },
-            createdAt = requireNotNull(entity.createdAt) { "createdAt was null." },
-            updatedAt = requireNotNull(entity.updatedAt) { "updatedAt was null." },
+            id = requireNotNull(entity.id) { "id is required." },
+            catId = requireNotNull(entity.catId) { "catId is required." },
+            name = requireNotNull(entity.name) { "name is required." },
+            version = requireNotNull(entity.version) { "version is required." },
+            createdAt = requireNotNull(entity.createdAt) { "createdAt is required." },
+            updatedAt = requireNotNull(entity.updatedAt) { "updatedAt is required." },
             deletedAt = entity.deletedAt
         )
 

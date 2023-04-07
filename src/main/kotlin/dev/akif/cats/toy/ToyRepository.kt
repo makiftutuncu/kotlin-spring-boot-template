@@ -14,14 +14,14 @@ interface ToyRepository : CRUDRepository<Long, ToyEntity> {
         ReplaceWith("findByIdAndCatIdAndDeletedAtIsNull(id, catId, pageable)")
     )
     override fun findAllByDeletedAtIsNull(pageable: Pageable): Page<ToyEntity> =
-        throw UnsupportedOperationException("Use findByIdAndCatIdAndDeletedAtIsNull() instead.")
+        throw UnsupportedOperationException("Use findByIdAndCatIdAndDeletedAtIsNull(id, catId, pageable) instead.")
 
     @Deprecated(
         "Use findAllByCatIdAndDeletedAtIsNull() instead.",
         ReplaceWith("findAllByCatIdAndDeletedAtIsNull(catId, pageable)")
     )
     override fun findByIdAndDeletedAtIsNull(id: Long): ToyEntity? =
-        throw UnsupportedOperationException("Use findAllByCatIdAndDeletedAtIsNull() instead.")
+        throw UnsupportedOperationException("Use findAllByCatIdAndDeletedAtIsNull(catId, pageable) instead.")
 
     fun findByIdAndCatIdAndDeletedAtIsNull(id: Long, catId: UUID): ToyEntity?
 
