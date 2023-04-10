@@ -10,10 +10,9 @@ import org.junit.jupiter.api.DisplayName
 @DisplayName("ToyService")
 class ToyServiceTest : CRUDServiceTest<Long, ToyEntity, Toy, CreateToy, UpdateToy, ToyMapper, ToyRepository, ToyService, ToyTestData>(
     mapper = ToyMapper(),
-    testData = ToyTestData
-) {
-    override fun buildService(mapper: ToyMapper, testData: ToyTestData): ToyService {
+    testData = ToyTestData,
+    buildService = { mapper, testData ->
         val cats = CatService(testData.instantProvider, InMemoryCatRepository, CatMapper(mapper))
-        return ToyService(testData.instantProvider, InMemoryToyRepository, mapper, cats)
+        ToyService(testData.instantProvider, InMemoryToyRepository, mapper, cats)
     }
-}
+)

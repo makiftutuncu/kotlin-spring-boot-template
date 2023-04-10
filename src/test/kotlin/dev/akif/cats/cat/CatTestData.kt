@@ -67,13 +67,13 @@ object CatTestData : CRUDTestData<UUID, CatEntity, Cat, CreateCat, UpdateCat, Ca
             PageRequest.of(0, 2) to Paged(
                 data = listOf(testEntity1, testEntity2),
                 page = 0,
-                perPage = 1,
+                perPage = 2,
                 totalPages = 2
             ),
             PageRequest.of(1, 2) to Paged(
                 data = listOf(testEntity3),
                 page = 1,
-                perPage = 1,
+                perPage = 2,
                 totalPages = 2
             ),
             PageRequest.of(2, 2) to Paged.empty(page = 2, perPage = 2, totalPages = 2)
