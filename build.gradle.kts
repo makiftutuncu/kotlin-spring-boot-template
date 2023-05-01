@@ -42,7 +42,7 @@ tasks.withType<KotlinCompile> {
     }
 }
 
-val springBootCrudVersion = "0.5.1-SNAPSHOT"
+val springBootCrudVersion = "0.5.1"
 val springdocOpenApiVersion = "2.0.2"
 
 dependencies {
