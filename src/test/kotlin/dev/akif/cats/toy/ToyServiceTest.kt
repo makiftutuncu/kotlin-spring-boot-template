@@ -3,7 +3,6 @@ package dev.akif.cats.toy
 import dev.akif.cats.cat.CatMapper
 import dev.akif.cats.cat.CatService
 import dev.akif.cats.cat.InMemoryCatRepository
-import dev.akif.cats.toy.*
 import dev.akif.crud.CRUDServiceTest
 import org.junit.jupiter.api.DisplayName
 
@@ -12,7 +11,11 @@ class ToyServiceTest : CRUDServiceTest<Long, ToyEntity, Toy, CreateToy, UpdateTo
     mapper = ToyMapper(),
     testData = ToyTestData,
     buildService = { mapper, testData ->
-        val cats = CatService(testData.instantProvider, InMemoryCatRepository, CatMapper(mapper))
+        val cats = CatService(testData.instantProvider, InMemoryCatRepository, CatMapper(ToyMapper()))
         ToyService(testData.instantProvider, InMemoryToyRepository, mapper, cats)
     }
-)
+) {
+    override fun resetData() {
+        InMemoryToyRepository.reset()
+    }
+}

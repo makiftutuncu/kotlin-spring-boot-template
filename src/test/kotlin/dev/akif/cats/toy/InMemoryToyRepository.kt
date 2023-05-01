@@ -7,9 +7,11 @@ import org.springframework.data.domain.Pageable
 import java.util.*
 
 object InMemoryToyRepository: InMemoryCRUDRepository<Long, ToyEntity, CreateToy, ToyTestData>(ToyTestData), ToyRepository {
+    @Suppress("OverridingDeprecatedMember", "DEPRECATION")
     override fun findAllByDeletedAtIsNull(pageable: Pageable): Page<ToyEntity> =
         super<ToyRepository>.findAllByDeletedAtIsNull(pageable)
 
+    @Suppress("OverridingDeprecatedMember", "DEPRECATION")
     override fun findByIdAndDeletedAtIsNull(id: Long): ToyEntity? =
         super<ToyRepository>.findByIdAndDeletedAtIsNull(id)
 

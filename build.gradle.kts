@@ -1,15 +1,16 @@
+import org.gradle.api.tasks.testing.logging.TestExceptionFormat
+import org.gradle.api.tasks.testing.logging.TestLogEvent
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 import org.jetbrains.kotlin.gradle.dsl.KotlinVersion
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
-import org.gradle.api.tasks.testing.logging.TestLogEvent
 
 plugins {
     idea
-    id("org.springframework.boot") version "3.0.5"
+    id("org.springframework.boot") version "3.0.6"
     id("io.spring.dependency-management") version "1.1.0"
-    kotlin("jvm") version "1.8.10"
-    kotlin("plugin.jpa") version "1.8.10"
-    kotlin("plugin.spring") version "1.8.10"
+    kotlin("jvm") version "1.8.20"
+    kotlin("plugin.jpa") version "1.8.20"
+    kotlin("plugin.spring") version "1.8.20"
 }
 
 group = "dev.akif"
@@ -41,7 +42,7 @@ tasks.withType<KotlinCompile> {
     }
 }
 
-val springBootCrudVersion = "0.5.0"
+val springBootCrudVersion = "0.5.1-SNAPSHOT"
 val springdocOpenApiVersion = "2.0.2"
 
 dependencies {
@@ -66,8 +67,10 @@ tasks.withType<Test> {
             TestLogEvent.SKIPPED,
             TestLogEvent.FAILED
         )
+        exceptionFormat = TestExceptionFormat.SHORT
         showCauses = true
         showExceptions = true
         showStackTraces = true
+        showStandardStreams = true
     }
 }

@@ -15,13 +15,9 @@ object CatTestData : CRUDTestData<UUID, CatEntity, Cat, CreateCat, UpdateCat, Ca
     override val idGenerator: IdGenerator<UUID> =
         IdGenerator.uuid
 
-    private val catId1 = idGenerator.next()
-    private val catId2 = idGenerator.next()
-    private val catId3 = idGenerator.next()
-
     override val testEntity1: CatEntity =
         CatEntity(
-            id = catId1,
+            id = idGenerator.next(),
             name = "Cookie",
             breed = "Tabby",
             age = 4,
@@ -33,7 +29,7 @@ object CatTestData : CRUDTestData<UUID, CatEntity, Cat, CreateCat, UpdateCat, Ca
 
     override val testEntity2: CatEntity =
         CatEntity(
-            id = catId2,
+            id = idGenerator.next(),
             name = "Kitty",
             breed = "Persian",
             age = 3,
@@ -45,7 +41,7 @@ object CatTestData : CRUDTestData<UUID, CatEntity, Cat, CreateCat, UpdateCat, Ca
 
     override val testEntity3: CatEntity =
         CatEntity(
-            id = catId3,
+            id = idGenerator.next(),
             name = "Meowth",
             breed = "Scottish Fold",
             age = 2,

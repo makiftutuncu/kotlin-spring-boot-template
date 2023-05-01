@@ -1,6 +1,6 @@
 package dev.akif.cats.cat
 
-import dev.akif.cats.cat.*
+import dev.akif.cats.toy.InMemoryToyRepository
 import dev.akif.cats.toy.ToyMapper
 import dev.akif.crud.CRUDServiceTest
 import org.junit.jupiter.api.DisplayName
@@ -11,4 +11,9 @@ class CatServiceTest : CRUDServiceTest<UUID, CatEntity, Cat, CreateCat, UpdateCa
     mapper = CatMapper(ToyMapper()),
     testData = CatTestData,
     buildService = { mapper, testData -> CatService(testData.instantProvider, InMemoryCatRepository, mapper) }
-)
+) {
+    override fun resetData() {
+        InMemoryToyRepository.reset()
+        InMemoryCatRepository.reset()
+    }
+}
