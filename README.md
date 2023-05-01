@@ -12,7 +12,7 @@
 
 ## Introduction
 
-Cats API is a web backend application. It provides CRUD APIs to manage cats.
+Cats API is a web backend application. It provides CRUD APIs to manage cats and their toys.
 
 It uses
 

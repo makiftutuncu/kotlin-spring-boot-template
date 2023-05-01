@@ -1,16 +1,23 @@
-package dev.akif.cats
+package dev.akif.cats.cat
 
 import dev.akif.crud.CRUDTestData
+import dev.akif.crud.IdGenerator
+import dev.akif.crud.InMemoryCRUDRepository
+import dev.akif.crud.common.Paged
+import dev.akif.crud.common.Parameters
+import org.springframework.data.domain.PageRequest
 import java.util.UUID
 
-class CatTestData : CRUDTestData<UUID, CatEntity, Cat, CreateCat, UpdateCat, CatTestData>(typeName = "Cat") {
-    private val catId1 = UUID.randomUUID()
-    private val catId2 = UUID.randomUUID()
-    private val catId3 = UUID.randomUUID()
+object CatTestData : CRUDTestData<UUID, CatEntity, Cat, CreateCat, UpdateCat, CatTestData>(typeName = "Cat") {
+    override val repository: InMemoryCRUDRepository<UUID, CatEntity, CreateCat, CatTestData>
+        get() = InMemoryCatRepository
+
+    override val idGenerator: IdGenerator<UUID> =
+        IdGenerator.uuid
 
     override val testEntity1: CatEntity =
         CatEntity(
-            id = catId1,
+            id = idGenerator.next(),
             name = "Cookie",
             breed = "Tabby",
             age = 4,
@@ -22,7 +29,7 @@ class CatTestData : CRUDTestData<UUID, CatEntity, Cat, CreateCat, UpdateCat, Cat
 
     override val testEntity2: CatEntity =
         CatEntity(
-            id = catId2,
+            id = idGenerator.next(),
             name = "Kitty",
             breed = "Persian",
             age = 3,
@@ -34,7 +41,7 @@ class CatTestData : CRUDTestData<UUID, CatEntity, Cat, CreateCat, UpdateCat, Cat
 
     override val testEntity3: CatEntity =
         CatEntity(
-            id = catId3,
+            id = idGenerator.next(),
             name = "Meowth",
             breed = "Scottish Fold",
             age = 2,
@@ -44,8 +51,35 @@ class CatTestData : CRUDTestData<UUID, CatEntity, Cat, CreateCat, UpdateCat, Cat
             deletedAt = null
         )
 
+    override val defaultFirstPageEntities: List<CatEntity> =
+        listOf(
+            testEntity1,
+            testEntity2,
+            testEntity3
+        )
+
+    override val paginationTestCases: List<Pair<PageRequest, Paged<CatEntity>>> =
+        listOf(
+            PageRequest.of(0, 2) to Paged(
+                data = listOf(testEntity1, testEntity2),
+                page = 0,
+                perPage = 2,
+                totalPages = 2
+            ),
+            PageRequest.of(1, 2) to Paged(
+                data = listOf(testEntity3),
+                page = 1,
+                perPage = 2,
+                totalPages = 2
+            ),
+            PageRequest.of(2, 2) to Paged.empty(page = 2, perPage = 2, totalPages = 2)
+        )
+
     override val moreTestEntities: Array<CatEntity> =
         emptyArray()
+
+    override val testParameters: Parameters =
+        Parameters.empty
 
     override fun areDuplicates(e1: CatEntity, e2: CatEntity): Boolean =
         e1.name == e2.name
@@ -63,9 +97,6 @@ class CatTestData : CRUDTestData<UUID, CatEntity, Cat, CreateCat, UpdateCat, Cat
             updatedAt = entity.updatedAt,
             deletedAt = entity.deletedAt
         )
-
-    override fun randomId(): UUID =
-        UUID.randomUUID()
 
     override fun entityToCreateModel(entity: CatEntity): CreateCat =
         CreateCat(
