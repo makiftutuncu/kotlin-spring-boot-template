@@ -43,7 +43,7 @@ tasks.withType<KotlinCompile> {
 }
 
 val springBootCrudVersion = "0.5.1"
-val springdocOpenApiVersion = "2.1.0"
+val springdocOpenApiVersion = "2.6.0"
 
 dependencies {
     implementation(kotlin("reflect"))
