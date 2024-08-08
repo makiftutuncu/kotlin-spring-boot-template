@@ -3,7 +3,7 @@ version: '3'
 services:
   cats-api-db:
     container_name: cats-api-db
-    image: postgres:15.3-alpine
+    image: postgres:15.8-alpine
     ports:
       - "${CATS_API_DB_PORT:-5432}:5432"
     volumes:
